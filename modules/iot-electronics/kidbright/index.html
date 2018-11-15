@@ -34,7 +34,7 @@
           <tr id="tabRow" height="1em">
             <td id="tab_blocks" class="tabon">...</td>
             <td class="tabmin">&nbsp;</td>
-            <td id="tab_javascript" class="taboff">JavaScript</td>
+            <td id="tab_javascript" class="taboff">Script</td>
             <!--<td class="tabmin">&nbsp;</td>
             <td id="tab_python" class="taboff">Python</td>
             <td class="tabmin">&nbsp;</td>
@@ -74,6 +74,24 @@
   <textarea id="content_xml" class="content" wrap="off"></textarea>-->
 
   <xml id="toolbox" style="display: none">
+	<category name="MainBoard" colour="#5ba55b">
+		<block type="kidbright">
+		  <field name="NAME">1-3</field>
+		</block>
+		</category>
+	<category name="Input" colour="#a5a55b"></category>
+	<category name="Output" colour="#a55b5b">
+		<block type="l298n_setting">
+		  <field name="kidbright_l298n_in1">26</field>
+		  <field name="kidbright_l298n_in2">27</field>
+		  <field name="kidbright_l298n_in3">18</field>
+		  <field name="kidbright_l298n_in4">19</field>
+		</block>
+		<block type="l298n_actions">
+		  <field name="l298n_actions_dropdown">AS</field>
+		</block>
+	</category>
+	<category name="IoT-Platform" colour="#5ba5a5"></category>
     <sep></sep>
     <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>

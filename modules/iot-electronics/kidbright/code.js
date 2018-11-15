@@ -22,7 +22,6 @@
  * @author fraser@google.com (Neil Fraser)
  */
 'use strict';
-
 /**
  * Create a namespace for the application.
  */
@@ -366,6 +365,113 @@ Code.checkAllGeneratorFunctionsDefined = function(generator) {
  * Initialize Blockly.  Called on page load.
  */
 Code.init = function() {
+
+	var statements_include = '';
+
+	Blockly.Blocks['l298n_actions'] = {
+	  init: function() {
+		this.appendDummyInput()
+			.appendField("L298N Action")
+			.appendField(new Blockly.FieldDropdown([["All Stop","AS"], ["All Forward","AF"], ["All Backward","AB"], ["Left Forward","LF"], ["Right Forward","RF"], ["Left Backward","LB"], ["Right Backward","RB"], ["Left Forward - Right Backward","LFRB"], ["Right Forward - Left Backward","RFLB"]]), "l298n_actions_dropdown");
+		this.setInputsInline(true);
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(0);
+	 this.setTooltip("");
+	 this.setHelpUrl("");
+	  }
+	};
+
+	Blockly.Blocks['kidbright'] = {
+	  init: function() {
+		this.appendDummyInput()
+			.appendField("KidBright Version")
+			.appendField(new Blockly.FieldDropdown([["1.3","1.3"], ["1.2","1.2"]]), "kidbright_version");
+		this.appendDummyInput()
+			.appendField("Setting");
+		this.appendStatementInput("kidbright_setting")
+			.setCheck(null);
+		this.appendDummyInput()
+			.appendField("Looping");
+		this.appendStatementInput("kidbright_looping")
+			.setCheck(null);
+		this.appendDummyInput()
+			.appendField("Functions");
+		this.appendStatementInput("kidbright_functions")
+			.setCheck(null);
+		this.setColour(120);
+	 this.setTooltip("");
+	 this.setHelpUrl("");
+	  }
+	};
+
+	Blockly.Blocks['l298n_setting'] = {
+	  init: function() {
+		this.appendDummyInput()
+			.appendField("L298N Setting");
+		this.appendDummyInput()
+			.appendField("IN1 = ")
+			.appendField(new Blockly.FieldDropdown([["Out1","26"], ["Out2","27"], ["IO18","18"], ["IO19","19"], ["IO23","23"]]), "kidbright_l298n_in1");
+		this.appendDummyInput()
+			.appendField("IN2 = ")
+			.appendField(new Blockly.FieldDropdown([["Out2","27"], ["IO18","18"], ["IO19","19"], ["IO23","23"], ["Out1","26"]]), "kidbright_l298n_in2");
+		this.appendDummyInput()
+			.appendField("IN3 = ")
+			.appendField(new Blockly.FieldDropdown([["IO18","18"], ["IO19","19"], ["IO23","23"], ["Out1","26"], ["Out2","27"]]), "kidbright_l298n_in3");
+		this.appendDummyInput()
+			.appendField("IN4 = ")
+			.appendField(new Blockly.FieldDropdown([["IO19","19"], ["IO23","23"], ["Out1","26"], ["Out2","27"], ["IO18","18"]]), "kidbright_l298n_in4");
+		this.setPreviousStatement(true, null);
+		this.setNextStatement(true, null);
+		this.setColour(0);
+	 this.setTooltip("");
+	 this.setHelpUrl("");
+	  }
+	};
+	Blockly.JavaScript['l298n_actions'] = function(block) {
+	  var dropdown_l298n_actions_dropdown = block.getFieldValue('l298n_actions_dropdown');
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = '...;\n';
+	  return code;
+	};
+
+	Blockly.JavaScript['kidbright'] = function(block) {
+	  statements_include = '';
+	  var dropdown_kidbright_version = block.getFieldValue('kidbright_version');
+	  var statements_kidbright_setting = Blockly.JavaScript.statementToCode(block, 'kidbright_setting');
+	  var statements_kidbright_looping = Blockly.JavaScript.statementToCode(block, 'kidbright_looping');
+	  var statements_kidbright_functions = Blockly.JavaScript.statementToCode(block, 'kidbright_functions');
+	  // TODO: Assemble JavaScript into code variable.
+	  var code = '//KidBright version = '+dropdown_kidbright_version+'\n';
+	  code += statements_include+'\n';
+	  code += 'setup(){\n'
+			+ statements_kidbright_setting
+			+ '}\n\n';
+	  code += 'loop(){\n'
+			+ statements_kidbright_looping
+			+ '}\n\n';
+	  code += statements_kidbright_functions;
+	  return code;
+	};
+
+	Blockly.JavaScript['l298n_setting'] = function(block) {
+	  var dropdown_kidbright_l298n_in1 = block.getFieldValue('kidbright_l298n_in1');
+	  var dropdown_kidbright_l298n_in2 = block.getFieldValue('kidbright_l298n_in2');
+	  var dropdown_kidbright_l298n_in3 = block.getFieldValue('kidbright_l298n_in3');
+	  var dropdown_kidbright_l298n_in4 = block.getFieldValue('kidbright_l298n_in4');
+	  // TODO: Assemble JavaScript into code variable.
+	  var include_str = '\nint IN1 = '+dropdown_kidbright_l298n_in1+';\n'
+				+ 'int IN2 = '+dropdown_kidbright_l298n_in2+';\n'
+				+ 'int IN3 = '+dropdown_kidbright_l298n_in3+';\n'
+				+ 'int IN4 = '+dropdown_kidbright_l298n_in4+';\n';
+	  statements_include += include_str;
+	  var code = '\npinMode(IN1,OUTPUT);\n'
+				+ 'pinMode(IN2,OUTPUT);\n'
+				+ 'pinMode(IN3,OUTPUT);\n'
+				+ 'pinMode(IN4,OUTPUT);\n';
+	  return code;
+	};
+
   Code.initLanguage();
 
   var rtl = Code.isRtl();
